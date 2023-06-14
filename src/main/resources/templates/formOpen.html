@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+  <title>Customer KYC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Serif&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script type="text/javascript" src="/js/formscript.js"></script>
+  
+</head>
+<body>
+	
+	<div class="mainform">
+		<form action="#" th:action="@{/kyc/save}" th:object="${kyc}" method="post">
+			<div class="table-row">
+				<div class="table-cell">
+					<label>OE<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<select id="selectedOE" onchange="populateone()">
+						<option selected>Select OE</option>
+						<option th:each="fn : ${OE}" th:value="${fn.id}" th:text="${fn.name}"></option>
+					</select>
+					<div class="mandatory-msg" id="oe"></div>
+				</div>
+				<div class="table-cell">
+					<label>Dealer<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<select id="selectedDealer" onchange="populatetwo()">
+						<option selected>Select Dealer</option>
+					</select>
+					<div class="mandatory-msg" id="dealer"></div>
+				</div>
+				<div class="table-cell">
+					<label>POS<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<select id="selectedPOS" onchange="populatethree()">
+						<option selected>Select POS</option>
+					</select>
+					<div class="mandatory-msg" id="pos"></div>
+				</div>
+			</div>
+			<div class="table-row">
+				<div class="table-cell">
+					<label>POS Agent<span class="mandatory">*</span></label>
+				</div>
+				<script>
+					function findid(){
+						var select = $("#selectedAgent").val();
+						console.log(select);
+						return select;
+					};
+				</script>
+				<div class="table-cell">
+					<select id="selectedAgent" th:field="*{pos_agent_id}">
+						<option selected th:value="-1">Select POS Agent</option>
+					</select>
+				<div class="mandatory-msg" id="agent"></div>
+				</div>
+				<div class="table-cell">
+					<label>Customer Mobile Number<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="mobile" th:field="*{mobile}" onkeypress="return allowOnlyNumbers(event)" onblur="validateMobile(document.getElementById('mobile').value,this.id)" >
+					<div id="span-mobile" class="mandatory-msg"></div>
+					<span th:text="${duplicateMobile}"></span>
+				</div>
+				<div class="table-cell">
+					<label>Customer Type<span class="mandatory" >*</span></label>
+				</div>
+				
+
+				
+				<div class="table-cell">
+					<select id="kind" th:field="*{customer_type}" onchange="func();" onselect="POAoptions();">
+						<option selected th:value="1">Company</option>
+						<option th:value="2">Individual</option>
+					</select>
+				</div>
+			</div>
+			
+
+
+	<div id="companyform">
+			
+				<h1><center>Company Basic Details</center></h1>
+
+			
+			<div class="table-row">
+				<div class="table-cell">
+					<label>Company Name<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" th:field="*{company_name}" id="comp-name" onblur="emptyField(document.getElementById('comp-name').value,this.id,document.getElementById('invalid-comp-name').id)">
+					<div id="invalid-comp-name" class="mandatory-msg"></div>
+				</div>
+				<div class="table-cell">
+					<label>Pincode<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="number" id="company-pin" onblur="validatePincode(document.getElementById('company-pin').value,this.id)">
+					<div id="invalid-pin-c" class="mandatory-msg"></div>
+				</div>
+				<div class="table-cell">
+					<label>Address<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<textarea class="address-box" placeholder="Enter address" id="comp-addr" th:field="*{company_address}" onblur="emptyField(document.getElementById('comp-addr').value,this.id,document.getElementById('invalid-comp-addr').id)"></textarea>
+					<div id="invalid-comp-addr" class="mandatory-msg"></div>
+				</div>
+			</div>
+			
+			<div class="table-row">
+				<div class="table-cell">
+					<label>Date of Incorporation<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="date" th:field="*{company_doi}">
+				</div>
+				<div class="table-cell">
+					<label>Company POI (Deed/PAN/GST/etc.)<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="comp-poi" th:field="*{company_poi}" onblur="emptyField(document.getElementById('comp-poi').value,this.id,document.getElementById('invalid-comp-poi').id)">
+					<div id="invalid-comp-poi" class="mandatory-msg"></div>
+				</div>
+			</div>
+			
+			<!--	<h1 id="signatory-header"><center>Authorised Signatory Details</center></h1>-->
+
+		</div>	
+		<div id="individualform">
+			<h1><center>Applicant Basic Details</center></h1>
+			<div class="table-row">
+				<div class="table-cell">
+					<label>First Name<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="comp-fname" th:field="*{first_name}" onblur="emptyField(document.getElementById('comp-fname').value,this.id,document.getElementById('invalid-comp-fname').id)">
+					<div id="invalid-comp-fname" class="mandatory-msg"></div>
+				</div>
+				<div class="table-cell">
+					<label>Middle Name</label>
+				</div>
+				<div class="table-cell">
+					<input type="text" th:field="*{middle_name}">
+				</div>
+				<div class="table-cell">
+					<label>Last Name<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="comp-lname" th:field="*{last_name}" onblur="emptyField(document.getElementById('comp-lname').value,this.id,document.getElementById('invalid-comp-lname').id)">
+					<div id="invalid-comp-lname" class="mandatory-msg"></div>
+				</div>
+			</div>
+			
+			<div class="table-row">
+				<div class="table-cell">
+					<label>Gender<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="radio" name="selection" class="radio-input" th:field="*{gender}" th:value="1">
+					<label class="norm">Male</label>
+					<input type="radio" name="selection" class="radio-input" th:field="*{gender}" th:value="2">
+					<label class="norm">Female</label>
+					<input type="radio" name="selection" class="radio-input" th:field="*{gender}" th:value="3">
+					<label class="norm">Others</label>
+				</div>
+				<div class="table-cell">
+					<label>Nationality<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="comp-nation" th:field="*{nationality}" onblur="emptyField(document.getElementById('comp-nation').value,this.id,document.getElementById('invalid-comp-nation').id)">
+					<div id="invalid-comp-nation" class="mandatory-msg"></div>
+				</div>
+				<div class="table-cell">
+					<label>OTP language</label>
+				</div>
+				<div class="table-cell">
+					<select th:field="*{otp_language}">
+						<option selected th:value="1">English</option>
+						<option th:value="2">Hindi</option>
+						<option th:value="3">Marathi</option>
+						<option th:value="4">Gujarati</option>
+						<option th:value="5">Malyalam</option>
+						<option th:value="6">Tamil</option>
+						<option th:value="7">Telugu</option>
+					</select>
+				</div>
+			</div>
+			
+			<div class="table-row">
+				<div class="table-cell">
+					<label>Alternate Contact</label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="alt-contact" th:field="*{alt_contact}" onkeypress="allowOnlyNumbers(event)" onblur="validateMobile(document.getElementById('alt-contact').value,this.id)">
+					<div class="mandatory-msg" id="alt-mobile"></div>
+				</div>
+				<div class="table-cell">
+					<label>Email</label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="company-mail" th:field="*{email}" onblur="validateEmail(document.getElementById('company-mail').value,this.id)">
+					<div id="company-mail-msg" class="mandatory-msg"></div>
+				</div>
+				<div class="table-cell">
+					<label>Mother's Maiden Name</label>
+				</div>
+				<div class="table-cell">
+					<input type="text" th:field="*{mother_name}">
+				</div>
+			</div>
+			
+			<div class="table-row">
+				<div class="table-cell">
+					<label>DOB<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="date" th:field="*{DOB}">
+				</div>
+				<div class="table-cell">
+					<label>POI Type<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<select th:field="*{POI_type}">
+						<option hidden selected th:value="-1">Select POI</option>
+						<option th:value="1">Aadhar</option>
+						<option th:value="2">PAN</option>
+						<option th:value="3">Passport</option>
+						<option th:value="4">Voter ID</option>
+						<option th:value="5">Driving License</option>
+					</select>
+				</div>
+				<div class="table-cell">
+					<label>POA Type<span class="mandatory">*</span></label>
+				</div>
+				
+<script>
+function POAoptions(){
+	console.log("entered POAoptions()");
+	var select = document.getElementById("kind");
+	var selectedValue = select.value;
+	console.log(selectedValue);
+	if(selectedValue=="2")
+	{
+	 $("#selectedPOA").empty();
+	 var response = [ "Aadhar", "Passport", "Voter id", "Driving license"];
+	 for(var i=0;i<response.length;i++)
+     {
+		var item = response[i];
+		var option = $("<option>").val(i+1).text(item);
+		$("#selectedPOA").append(option);
+        console.log(item);
+     }
+	}
+	
+	else
+	{
+		var response = [ "ROC", "Tax Certificate", "Telephone bill of fixed line", "Electricity bill", "Water bill", 
+		"GST Certificate", "Trade License", "Certificate of Incorporation", "Partnershp Deed", "Company PAN Card",
+		"Self declaration (for govt organisations)", "Form 16 (for govt organsiations)"];
+	 	for(var i=0;i<response.length;i++)
+     	{
+			var item = response[i];
+			var option = $("<option>").val(i+1).text(item);
+			$("#selectedPOA").append(option);
+        	console.log(item);
+     	}
+	}
+}
+</script>
+
+				
+				<div class="table-cell">
+					<select th:field="*{POA_type}" id="selectedPOA" onselect="POAoptions()">
+						<option selected hidden th:value="-1">Select POA</option>
+						
+					</select>
+				</div>
+			</div>
+			
+			<div class="table-row">
+				<div class="table-cell">
+					<label>POI Number<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="comp-poi-no" th:field="*{poi}" onblur="emptyField(document.getElementById('comp-poi-no').value,this.id,document.getElementById('invalid-comp-poi-no').id)">
+					<div id="invalid-comp-poi-no" class="mandatory-msg"></div>
+					<span th:text="${existingPOI}"></span>
+				</div>
+				<div class="table-cell">
+					<label>POA Number<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<input type="text" id="comp-poa-no" th:field="*{poa}" onblur="emptyField(document.getElementById('comp-poa-no').value,this.id,document.getElementById('invalid-comp-poa-no').id)">
+					<div id="invalid-comp-poa-no" class="mandatory-msg"></div>
+					<span th:text="${existingPOA}"></span>
+				</div>
+				<div class="table-cell">
+					<label>Company Type<span class="mandatory">*</span></label>
+				</div>
+				<div class="table-cell">
+					<select th:field="*{company_type}" id="company-type">
+						<option selected hidden th:value="-1">Select Company Type</option>
+						<option th:value="1">Government</option>
+						<option th:value="2">Proprietor</option>
+						<option th:value="3">Others</option>
+					</select>
+				</div>
+			</div>
+
+	</div>
+	
+
+	<input type="submit" class="save-button" value="SAVE">
+	<!--<a th:href="@{/kyc/details}" class="save-button">SAVE</a>-->
+</form>
+		</div>
+	
+</body>
+
+</html>

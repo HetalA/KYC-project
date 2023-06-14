@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <title>Upload Documents</title>
+ <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+ <script>
+	 function noImage(){
+		 var imgInput = document.getElementById("image");
+		 var file = imgInput.files[0];
+		 if(!file)
+		 {
+			 alert("No file has been selected. Please choose an image to upload");
+			 return false;
+		 }
+		 if(file && !file.type.startsWith("image/"))
+		 {
+			 alert("Invalid Image Type. Please choose files with a .jpeg or .png extension");
+			 return false;
+		 }
+	 }
+	 
+	function findId(){
+	$.ajax({
+    url: "/kyc/getCurrId",
+    type: "GET",
+    success: function(response) {
+        // Process the response data
+        //$("#selectedDealer").empty();
+     return id;
+    },
+    	error: function(xhr, status, error) {
+        // Handle the error
+       	console.error(error);
+    }
+	});
+};
+
+ </script>
+</head>
+<body>
+	<form th:action="@{/kyc/saveDoc}" object="${kyc}" method="post" enctype="multipart/form-data" onsubmit="return noImage()">
+		<input id="id" name="id" th:value="return findId()" hidden>
+		<label>Photo : </label>
+		<input type="file" id="image" name="image" accept="image/png, image/jpeg" ><br><br>
+		<button type="submit">Upload a photo</button>
+	</form>
+</body>
+</body>
+</html>

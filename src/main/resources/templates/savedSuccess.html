@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+ <title>Success</title>
+ <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+ <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+ <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+ <script>
+		$(document).ready( function () {
+    		$('#myTable').DataTable();
+		} );
+ </script>
+</head>
+<body>
+	<table class="display" id="myTable">
+   	<thead >
+    	<th scope="row">POS Agent ID</th>
+    	<th scope="row">Customer Mobile Number</th>
+    	<th scope="row">Customer Type</th>
+    	<th scope="row">Company Name</th>
+    	<th scope="row">Company Address</th>
+    	<th scope="row">Company DOI</th>
+    	<th scope="row">Company POI type</th>
+    	<th scope="row">First Name</th>
+    	<th scope="row">Middle Name</th>
+    	<th scope="row">Last Name</th>
+    	<th scope="row">Gender</th>
+    	<th scope="row">Nationality</th>
+    	<th scope="row">DOB</th>
+    	<th scope="row">POI type</th>
+    	<th scope="row">POI#</th>
+    	<th scope="row">POA type</th>
+    	<th scope="row">POA#</th>
+   	</thead>
+   <tbody>   
+     <tr th:each="item : ${details}">
+      <td th:text="${item.pos_agent_id}"></td>
+      <td th:text="${item.customer_mobile}"></td>
+      <td th:text="${item.customer_type}"></td>
+      <td th:text="${item.company_name}"></td>
+      <td th:text="${item.company_address}"></td>
+      <td th:text="${item.company_doi}"></td>
+      <td th:text="${item.company_poi}"></td>
+      <td th:text="${item.first_name}"></td>
+      <td th:text="${item.middle_name}"></td>
+      <td th:text="${item.last_name}"></td>
+      <td th:text="${item.gender}"></td>
+      <td th:text="${item.nationality}"></td>
+      <td th:text="${item.DOB}"></td>
+      <td th:text="${item.POI_type}"></td>
+      <td th:text="${item.POI_number}"></td>
+      <td th:text="${item.POA_type}"></td>
+      <td th:text="${item.POA_number}"></td>
+     </tr>
+    </tbody>
+  </table>
+</body>
+</html>
