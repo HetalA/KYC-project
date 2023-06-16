@@ -32,11 +32,12 @@
     	<th scope="row">POI#</th>
     	<th scope="row">POA type</th>
     	<th scope="row">POA#</th>
+    	<th scope="row">Action</th>
    	</thead>
    <tbody>   
      <tr th:each="item : ${details}">
       <td th:text="${item.pos_agent_id}"></td>
-      <td th:text="${item.customer_mobile}"></td>
+      <td th:text="${item.mobile}"></td>
       <td th:text="${item.customer_type}"></td>
       <td th:text="${item.company_name}"></td>
       <td th:text="${item.company_address}"></td>
@@ -49,9 +50,10 @@
       <td th:text="${item.nationality}"></td>
       <td th:text="${item.DOB}"></td>
       <td th:text="${item.POI_type}"></td>
-      <td th:text="${item.POI_number}"></td>
+      <td th:text="${item.poi}"></td>
       <td th:text="${item.POA_type}"></td>
-      <td th:text="${item.POA_number}"></td>
+      <td th:text="${item.poa}"></td>
+      <td> <a th:href="@{/kyc/uploadi/} + ${item.id}" class="upload-btn"> Upload POI  <a th:href="@{/kyc/uploada/} + ${item.id}" class="upload-btn"> Upload POA </td>
      </tr>
     </tbody>
   </table>

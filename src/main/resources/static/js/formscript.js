@@ -77,6 +77,7 @@ function func(){
 	var div1 = document.getElementById("companyform");
 	var div2 = document.getElementById("individualform");
 	var comp_type = document.getElementById("company-type");
+	var comp_label = document.getElementById("company-label");
 	var selectedValue = select.value;
 	console.log(selectedValue);
 	if(selectedValue=="2")
@@ -84,6 +85,7 @@ function func(){
 	 div1.style.display = 'none';
 	 div2.style.display = 'block';
 	 comp_type.style.display = 'none';
+	 comp_label.style.display = 'none';
 	}
 	
 	

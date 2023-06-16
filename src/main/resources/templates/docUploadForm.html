@@ -18,29 +18,25 @@
 			 alert("Invalid Image Type. Please choose files with a .jpeg or .png extension");
 			 return false;
 		 }
-	 }
+		 event.preventDefault(); 
+		 var form = document.getElementById("myForm");
+    	 var fieldValue = document.getElementById("id").value;
+    	 console.log(fieldValue);
+    	 form.action = "/kyc/savePoi/" + fieldValue;
+    	 form.submit();
 	 
-	function findId(){
-	$.ajax({
-    url: "/kyc/getCurrId",
-    type: "GET",
-    success: function(response) {
-        // Process the response data
-        //$("#selectedDealer").empty();
-     return id;
-    },
-    	error: function(xhr, status, error) {
-        // Handle the error
-       	console.error(error);
-    }
-	});
-};
-
+	};
+	function f(){
+		console.log(window.location.pathname);
+    	var pathVar = window.location.pathname.split('/').pop();
+    	console.log(pathVar);
+		document.getElementById('id').value = pathVar;
+	};
  </script>
 </head>
-<body>
-	<form th:action="@{/kyc/saveDoc}" object="${kyc}" method="post" enctype="multipart/form-data" onsubmit="return noImage()">
-		<input id="id" name="id" th:value="return findId()" hidden>
+<body onload="f()">
+	<form id="myForm" object="${kyc}" method="post" enctype="multipart/form-data" onsubmit="return noImage(event)">
+		<input id="id" name="id" hidden>
 		<label>Photo : </label>
 		<input type="file" id="image" name="image" accept="image/png, image/jpeg" ><br><br>
 		<button type="submit">Upload a photo</button>

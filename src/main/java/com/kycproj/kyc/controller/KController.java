@@ -69,7 +69,7 @@ public class KController {
 		if(kservice.existsByMobile(mobile))
 		{
 			model.addAttribute("duplicateMobile","Mobile number already exists.");
-			return "formOpen";
+			return "redirect:/kyc/form";
 		}
 		if(kservice.existsByPOA(POA_no))
 		{
@@ -94,23 +94,57 @@ public class KController {
 		return "savedSuccess";
 	}
 	
+	@GetMapping("/uploadi/{id}")
+	public String uploadi(@PathVariable("id") int id)
+	{
+		return "docUploadForm";
+	}
 	
+	@GetMapping("/uploada/{id}")
+	public String uploada(@PathVariable("id") int id)
+	{
+		return "poaUploadForm";
+	}
 	
-	@PostMapping("/saveDoc")
-	public String savePhoto(@RequestParam("image") MultipartFile mpf, kyc_details kyc) throws IOException{
+	@PostMapping("/savePoi/{id}")
+	public String savePhoto(@RequestParam("image") MultipartFile mpf, @PathVariable("id") int id) throws IOException{
 		//System.out.println("controller");
 		
 		String filename = StringUtils.cleanPath(mpf.getOriginalFilename());
 		System.out.println(filename);
-		System.out.println(kyc);
-		int id = kyc.getId();
+		//System.out.println(kyc);
+		//int id = kyc.getId();
 		System.out.println(id);
-		//kyc_details kyc = new kyc_details();
+		kyc_details kyc = new kyc_details();
 		kyc.setPOI_name(filename);
 		
 		kyc_details savedPOI = kservice.savePOI(filename,id);
 		try {
 		String upload = "POI-photos/" + savedPOI.getId();
+		FilesUpload.saveFile(upload,filename,mpf);
+		}
+		catch(IOException e)
+		{
+			System.out.println(e);
+		};
+		return "redirect:/kyc/display";
+	}
+	
+	@PostMapping("/savePoa/{id}")
+	public String saveProofAddr(@RequestParam("image") MultipartFile mpf, @PathVariable("id") int id) throws IOException{
+		//System.out.println("controller");
+		
+		String filename = StringUtils.cleanPath(mpf.getOriginalFilename());
+		System.out.println(filename);
+		//System.out.println(kyc);
+		//int id = kyc.getId();
+		System.out.println(id);
+		kyc_details kyc = new kyc_details();
+		kyc.setPOA_name(filename);
+		
+		kyc_details savedPOA = kservice.savePOA(filename,id);
+		try {
+		String upload = "POA-photos/" + savedPOA.getId();
 		FilesUpload.saveFile(upload,filename,mpf);
 		}
 		catch(IOException e)
