@@ -39,6 +39,11 @@ public class KycServiceImpl implements KycService{
 		return (List<kyc_details>)detailsrepo.findAll();
 	}
 	
+	@Override
+	public kyc_details getApplicantById(int id){
+		return detailsrepo.getById(id);
+	}
+	
 	public void deleteById(Integer id) {
 		kycrepo.deleteById(id);
 	}

@@ -294,8 +294,6 @@ public class kyc_details {
 	}
 
 
-
-
 	public int getCompany_type() {
 		return company_type;
 	}
@@ -354,7 +352,7 @@ public class kyc_details {
 
 	@Override
 	public String toString() {
-		return "kyc_details [id=" + id + ", pos_agent_id=" + pos_agent_id + ", customer_mobile=" + mobile
+		return "kyc_details [id=" + id + ", pos_agent_id=" + pos_agent_id + ", mobile=" + mobile
 				+ ", customer_type=" + customer_type + ", company_name=" + company_name + ", company_address="
 				+ company_address + ", company_doi=" + company_doi + ", company_poi=" + company_poi + ", gender="
 				+ gender + ", first_name=" + first_name + ", middle_name=" + middle_name + ", last_name=" + last_name
@@ -374,6 +372,8 @@ public class kyc_details {
 	public void setIs_POA_uploaded(boolean is_POA_uploaded) {
 		this.is_POA_uploaded = is_POA_uploaded;
 	}
+
+
 
 
 	

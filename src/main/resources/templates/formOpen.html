@@ -237,13 +237,14 @@
 						<option th:value="5">Driving License</option>
 					</select>
 				</div>
+				
 				<div class="table-cell">
 					<label>POA Type<span class="mandatory">*</span></label>
 				</div>
 				
 				
 				<div class="table-cell">
-					<select th:field="*{POA_type}" id="selectedPOA" onselect="POAoptions()">
+					<select th:field="*{POA_type}" id="selectedPOA-comp">
 						<option selected hidden th:value="-1">Select POA</option>
 						<option th:value="1">ROC</option>
 						<option th:value="2">Tax Certificate</option>
@@ -260,38 +261,9 @@
 
 					</select>
 				</div>
+				
 			</div>
 			
-<script>
-function POAoptions(){
-	console.log("entered POAoptions()");
-	var select = document.getElementById("kind");
-	var selectedValue = select.value;
-	var poa = document.getElementById("selectedPOA");
-	console.log(selectedValue);
-	if(selectedValue=="2")
-	{
-	 //$("#selectedPOA").empty();
-	 var options = [
-  		{ value: '1', text: 'Aadhar' },
-  		{ value: '2', text: 'Passport' },
-  		{ value: '3', text: 'Voter id' },
-  		{ value: '4', text: 'Driving License' }
-		];
-	 //var response = [ "Aadhar", "Passport", "Voter id", "Driving license"];
-	 for(var i=0;i<options.length;i++)
-     {
-		var option = document.createElement('option');
-		option.value = options[i].value;
-		option.text = options[i].text;
-		poa.appendChild(option);
-        console.log(item);
-     }
-	}
-	
-
-}
-</script>
 			
 			<div class="table-row">
 				<div class="table-cell">

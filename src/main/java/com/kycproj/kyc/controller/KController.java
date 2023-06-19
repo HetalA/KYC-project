@@ -2,6 +2,7 @@ package com.kycproj.kyc.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -108,15 +109,13 @@ public class KController {
 	
 	@PostMapping("/savePoi/{id}")
 	public String savePhoto(@RequestParam("image") MultipartFile mpf, @PathVariable("id") int id) throws IOException{
-		//System.out.println("controller");
 		
 		String filename = StringUtils.cleanPath(mpf.getOriginalFilename());
 		System.out.println(filename);
-		//System.out.println(kyc);
-		//int id = kyc.getId();
 		System.out.println(id);
 		kyc_details kyc = new kyc_details();
 		kyc.setPOI_name(filename);
+		kyc.setIs_POI_uploaded(true);
 		
 		kyc_details savedPOI = kservice.savePOI(filename,id);
 		try {
@@ -141,6 +140,7 @@ public class KController {
 		System.out.println(id);
 		kyc_details kyc = new kyc_details();
 		kyc.setPOA_name(filename);
+		kyc.setIs_POA_uploaded(true);
 		
 		kyc_details savedPOA = kservice.savePOA(filename,id);
 		try {
@@ -152,5 +152,45 @@ public class KController {
 			System.out.println(e);
 		};
 		return "redirect:/kyc/display";
+	}
+	
+	@ResponseBody
+	@GetMapping("checkPOA/{id}")
+	public boolean checkIfPoa(@ModelAttribute("item") kyc_details kyc)
+	{
+		System.out.println(kyc);
+		boolean POA_exist = kyc.isIs_POA_uploaded();
+		if(POA_exist)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	@ResponseBody
+	@GetMapping("checkPOI/{id}")
+	public boolean checkIfPoi(@ModelAttribute("item") kyc_details kyc)
+	{
+		boolean POI_exist = kyc.isIs_POI_uploaded();
+		if(POI_exist)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	@GetMapping("view/{id}")
+	public String view(@PathVariable("id") int id, Model model)
+	{
+		kyc_details kyc = kservice.getApplicantById(id);
+		model.addAttribute("kyc",kyc);
+		System.out.println(kyc);
+		return "customerView";
+	}
+	
+	@GetMapping("menu")
+	public String home()
+	{
+		return "homepage";
 	}
 }

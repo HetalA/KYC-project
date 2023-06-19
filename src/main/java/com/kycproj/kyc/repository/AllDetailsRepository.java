@@ -13,6 +13,8 @@ public interface AllDetailsRepository extends CrudRepository<kyc_details,Integer
 	boolean existsByPoa(String pOA_no);
 
 	boolean existsByPoi(String pOI_no);
+
+	kyc_details getById(int id);
 	
 	
 

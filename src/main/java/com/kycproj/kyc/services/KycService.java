@@ -1,6 +1,7 @@
 package com.kycproj.kyc.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.kycproj.kyc.model.user_details;
 import com.kycproj.kyc.model.User_type;
@@ -18,5 +19,6 @@ public interface KycService {
 	boolean existsByMobile(String mobile);
 	boolean existsByPOA(String pOA_no);
 	boolean existsByPOI(String pOI_no);
+	kyc_details getApplicantById(int id);
 
 }

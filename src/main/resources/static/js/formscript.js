@@ -78,6 +78,8 @@ function func(){
 	var div2 = document.getElementById("individualform");
 	var comp_type = document.getElementById("company-type");
 	var comp_label = document.getElementById("company-label");
+	var company_select = document.getElementById("selectedPOA-comp");
+	var ind_select = document.getElementById("selectedPOA-indi");
 	var selectedValue = select.value;
 	console.log(selectedValue);
 	if(selectedValue=="2")
@@ -86,13 +88,12 @@ function func(){
 	 div2.style.display = 'block';
 	 comp_type.style.display = 'none';
 	 comp_label.style.display = 'none';
+	 company_select.style.display = 'none';
 	}
-	
-	
+	else{
+		ind_select.style.display = 'none';
+	}
 }
-
-
-
 
 
 function validateMobile(mobile,id){
@@ -113,9 +114,11 @@ function validateMobile(mobile,id){
 	}
 }
 
+
 function validateSelection(selectedVal,id) {
 	console.log(selectedVal,id);
 }
+
 
 function validateEmail(selectedVal,id) {
 	console.log("inside validateEmail()");
@@ -137,6 +140,7 @@ function validateEmail(selectedVal,id) {
 	}
 }
 
+
 function allowOnlyNumbers(event) {
   var keyCode = event.keyCode || event.which;
   //var keyCode = document.getElementById("mobile").value;
@@ -146,6 +150,7 @@ function allowOnlyNumbers(event) {
     return false;
   }
 }
+
 
 function validatePincode(pin,id) {
 	console.log(pin,pin.length);
@@ -164,6 +169,7 @@ function validatePincode(pin,id) {
 			document.getElementById("invalid-pin-c").innerHTML = "";
 	}
 }
+
 
 function emptyField(val,id,spanid) {
 	console.log(id,spanid);

@@ -3,6 +3,7 @@
 <head>
  <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
  <title>Success</title>
+ <link rel="stylesheet" href="/css/style.css">
  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
  <script type="text/javascript" charset="utf8" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
@@ -11,10 +12,62 @@
     		$('#myTable').DataTable();
 		} );
  </script>
+ <script>
+	 function checkFieldNull(event) {
+		 var selectedval = document.getElementById("itemid").textContent;
+		 console.log(selectedval);
+ 		 $.ajax({
+    		url: '/kyc/checkPOA/'+selectedval, 
+    		method: 'GET',
+    		success: function(response) {
+      		if (response === true) {
+        		console.log('Field is null');
+      		} 
+      		else {
+				const link = document.getElementById("poa-button");
+        		console.log('Field is not null');
+        		link.addEventListener('click', function(event) {
+  					event.preventDefault(); 
+				});
+      		}
+    	},
+    	error: function(xhr, status, error) {
+      	console.log('An error occurred:', error);
+    	}
+  	});
+  }
+  
+  function checkFieldPOINull(event){
+  	var selectedval = document.getElementById("itemid").textContent;
+		console.log(selectedval);
+  	$.ajax({
+    		url: '/kyc/checkPOI/'+selectedval, 
+    		method: 'GET',
+    		success: function(response) {
+      		if (response === true) {
+        		console.log('Field is null');
+        		//return true;
+        		
+      		} 
+      		else {
+        		console.log('Field is not null');
+        		$("#poi-button a").prop("href", "#");
+        		console.log('setting href');
+      		}
+    		},
+    		error: function(xhr, status, error) {
+      		console.log('An error occurred:', error);
+    	}
+  	});
+}
+
+	 
+ </script>
 </head>
 <body>
 	<table class="display" id="myTable">
    	<thead >
+		<th scope="row">ID</th>
     	<th scope="row">POS Agent ID</th>
     	<th scope="row">Customer Mobile Number</th>
     	<th scope="row">Customer Type</th>
@@ -32,10 +85,11 @@
     	<th scope="row">POI#</th>
     	<th scope="row">POA type</th>
     	<th scope="row">POA#</th>
-    	<th scope="row">Action</th>
+    	<th scope="row" width="200px">Action</th>
    	</thead>
    <tbody>   
      <tr th:each="item : ${details}">
+	  <td th:text="${item.id}" id="itemid"></td>
       <td th:text="${item.pos_agent_id}"></td>
       <td th:text="${item.mobile}"></td>
       <td th:text="${item.customer_type}"></td>
@@ -53,7 +107,10 @@
       <td th:text="${item.poi}"></td>
       <td th:text="${item.POA_type}"></td>
       <td th:text="${item.poa}"></td>
-      <td> <a th:href="@{/kyc/uploadi/} + ${item.id}" class="upload-btn"> Upload POI  <a th:href="@{/kyc/uploada/} + ${item.id}" class="upload-btn"> Upload POA </td>
+      <td> <a th:href="@{/kyc/uploadi/} + ${item.id}" class="btn" id="poi-button" onmouseover="checkFieldPOINull()"> POI <br> 
+      	   <a th:href="@{/kyc/uploada/} + ${item.id}" class="btn" id="poa-button" onclick="checkFieldNull()"> POA <br>
+		   <a th:href="@{/kyc/view/} + ${item.id}" class="btn" id="view-button"> View
+	  </td>
      </tr>
     </tbody>
   </table>
