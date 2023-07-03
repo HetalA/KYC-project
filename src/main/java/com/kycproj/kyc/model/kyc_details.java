@@ -108,6 +108,17 @@ public class kyc_details {
 	@Column(name= "is_POA_uploaded")
 	private boolean is_POA_uploaded;
 	
+	@Column(name="reason")
+	private String reason;
+	
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -350,19 +361,21 @@ public class kyc_details {
 		this.is_POI_uploaded = is_POI_uploaded;
 	}
 
+	
+
 	@Override
 	public String toString() {
-		return "kyc_details [id=" + id + ", pos_agent_id=" + pos_agent_id + ", mobile=" + mobile
-				+ ", customer_type=" + customer_type + ", company_name=" + company_name + ", company_address="
-				+ company_address + ", company_doi=" + company_doi + ", company_poi=" + company_poi + ", gender="
-				+ gender + ", first_name=" + first_name + ", middle_name=" + middle_name + ", last_name=" + last_name
+		return "kyc_details [id=" + id + ", pos_agent_id=" + pos_agent_id + ", mobile=" + mobile + ", customer_type="
+				+ customer_type + ", company_name=" + company_name + ", company_address=" + company_address
+				+ ", company_doi=" + company_doi + ", company_poi=" + company_poi + ", gender=" + gender
+				+ ", first_name=" + first_name + ", middle_name=" + middle_name + ", last_name=" + last_name
 				+ ", nationality=" + nationality + ", otp_language=" + otp_language + ", alt_contact=" + alt_contact
 				+ ", email=" + email + ", mother_name=" + mother_name + ", alt_no_holder_relation="
 				+ alt_no_holder_relation + ", DOB=" + DOB + ", POI_type=" + POI_type + ", POA_type=" + POA_type
-				+ ", POI_number=" + poi + ", POA_number=" + poa + ", company_type=" + company_type
-				+ ", POI_name=" + POI_name + ", POA_name=" + POA_name + ", status=" + status + ", created_date="
-				+ created_date + ", modified_date=" + modified_date + ", is_POI_uploaded=" + is_POI_uploaded
-				+ ", is_POA_uploaded=" + is_POA_uploaded + "]";
+				+ ", poi=" + poi + ", poa=" + poa + ", company_type=" + company_type + ", POI_name=" + POI_name
+				+ ", POA_name=" + POA_name + ", status=" + status + ", created_date=" + created_date
+				+ ", modified_date=" + modified_date + ", is_POI_uploaded=" + is_POI_uploaded + ", is_POA_uploaded="
+				+ is_POA_uploaded + ", reason=" + reason + "]";
 	}
 
 	public boolean isIs_POA_uploaded() {

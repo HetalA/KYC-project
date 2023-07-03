@@ -12,9 +12,17 @@
   
 </head>
 <body>
-	
+	<header class="fixed-header">
+		<nav>
+			<ul>
+            <li><a th:href="@{/kyc/menu}">HOME</a></li>
+            <li><a th:href="@{/kyc/form}">NEW KYC</a></li>
+            <li><a th:href="@{/kyc/display}">VIEW ALL</a></li>
+            </ul>
+        </nav>
+    </header>
 	<div class="mainform">
-		<form action="#" th:action="@{/kyc/save}" th:object="${kyc}" method="post">
+		<form action="#" th:action="@{/kyc/save}" th:object="${kyc}" method="post" onsubmit=" finalCheck()">
 			<div class="table-row">
 				<div class="table-cell">
 					<label>OE<span class="mandatory">*</span></label>
@@ -141,8 +149,8 @@
 					<label>First Name<span class="mandatory">*</span></label>
 				</div>
 				<div class="table-cell">
-					<input type="text" id="comp-fname" th:field="*{first_name}" onblur="emptyField(document.getElementById('comp-fname').value,this.id,document.getElementById('invalid-comp-fname').id)">
-					<div id="invalid-comp-fname" class="mandatory-msg"></div>
+					<input type="text" id="fname" th:field="*{first_name}" onblur="emptyField(document.getElementById('comp-fname').value,this.id,document.getElementById('invalid-comp-fname').id)">
+					<div id="invalid-fname" class="mandatory-msg"></div>
 				</div>
 				<div class="table-cell">
 					<label>Middle Name</label>
@@ -154,8 +162,8 @@
 					<label>Last Name<span class="mandatory">*</span></label>
 				</div>
 				<div class="table-cell">
-					<input type="text" id="comp-lname" th:field="*{last_name}" onblur="emptyField(document.getElementById('comp-lname').value,this.id,document.getElementById('invalid-comp-lname').id)">
-					<div id="invalid-comp-lname" class="mandatory-msg"></div>
+					<input type="text" id="lname" th:field="*{last_name}" onblur="emptyField(document.getElementById('comp-lname').value,this.id,document.getElementById('invalid-comp-lname').id)">
+					<div id="invalid-lname" class="mandatory-msg"></div>
 				</div>
 			</div>
 			
@@ -175,8 +183,8 @@
 					<label>Nationality<span class="mandatory">*</span></label>
 				</div>
 				<div class="table-cell">
-					<input type="text" id="comp-nation" th:field="*{nationality}" onblur="emptyField(document.getElementById('comp-nation').value,this.id,document.getElementById('invalid-comp-nation').id)">
-					<div id="invalid-comp-nation" class="mandatory-msg"></div>
+					<input type="text" id="nation" th:field="*{nationality}" onblur="emptyField(document.getElementById('comp-nation').value,this.id,document.getElementById('invalid-comp-nation').id)">
+					<div id="invalid-nation" class="mandatory-msg"></div>
 				</div>
 				<div class="table-cell">
 					<label>OTP language</label>
@@ -206,8 +214,8 @@
 					<label>Email</label>
 				</div>
 				<div class="table-cell">
-					<input type="text" id="company-mail" th:field="*{email}" onblur="validateEmail(document.getElementById('company-mail').value,this.id)">
-					<div id="company-mail-msg" class="mandatory-msg"></div>
+					<input type="text" id="mail" th:field="*{email}" onblur="validateEmail(document.getElementById('mail').value,this.id)">
+					<div id="mail-msg" class="mandatory-msg"></div>
 				</div>
 				<div class="table-cell">
 					<label>Mother's Maiden Name</label>
@@ -243,35 +251,63 @@
 				</div>
 				
 				
-				<div class="table-cell">
-					<select th:field="*{POA_type}" id="selectedPOA-comp">
+				<div class="table-cell" id="div-poa-comp">
+					<select th:field="*{POA_type}" id="selectedPOA" onclick="poaOptions()">
 						<option selected hidden th:value="-1">Select POA</option>
-						<option th:value="1">ROC</option>
-						<option th:value="2">Tax Certificate</option>
-						<option th:value="3">Telephone bill of fixed line (not older than three months)</option>
-						<option th:value="4">Electricity bill (not older than three months)</option>
-						<option th:value="5">Water bill (not older than three months)</option>
-						<option th:value="6">GST Certificate</option>
-						<option th:value="7">Trade License (MC)</option>
-						<option th:value="8">Certificate of Incorporation (CoI)</option>
-						<option th:value="9">Partnership Deed</option>
-						<option th:value="10">Self Declaration (for govt organisations)</option>
-						<option th:value="11">Form 16 (for govt organisations)</option>
-						<option th:value="12">Company PAN Card</option>
+						
 
 					</select>
 				</div>
-				
 			</div>
 			
+			<script>
+				function poaOptions(){
+					var typeOfAppl = document.getElementById('kind').value;
+					$('#selectedPOA').empty();
+					console.log(typeOfAppl);
+					if(typeOfAppl=='1')
+					{
+						var data = [
+      						{ "x": "1", "type": "ROC" },
+      						{ "x": "2", "type": "Tax Certificate" },
+      						{ "x": "3", "type": "Telephone bill of fixed line (not older than three months)" },
+      						{ "x": "4", "type": "Electricity bill (not older than three months)" },
+      						{ "x": "5", "type": "Water bill (not older than three months)" },
+      						{ "x": "6", "type": "GST Certificate" },
+      						{ "x": "7", "type": "Trade License (MC)" },
+      						{ "x": "8", "type": "Certificate of Incorporation (CoI)" },
+      						{ "x": "9", "type": "Partnership Deed" },
+      						{ "x": "10", "type": "Self Declaration (for govt organisations)" },
+      						{ "x": "11", "type": "Form 16 (for govt organisations)" },
+      						{ "x": "12", "type": "Company PAN Card" }];
+      					//console.log(data[0].x);
+   						for (var index = 0; index < data.length; index++) {
+							//console.log(index,typeof(index));
+							//console.log(data[index].x);
+      						$('#selectedPOA').append('<option value="' + data[index].x + '">' + data[index].type + '</option>');
+   						}
+					}
+					else
+					{
+						var data = [
+      						{ "x": "1", "type": "Aadhar" },
+      						{ "x": "2", "type": "Passport" },
+      						{ "x": "3", "type": "Voter ID" },
+      						{ "x": "4", "type": "Driving License" }];
+   						for (var index = 0; index < data.length; index++) {
+      						$('#selectedPOA').append('<option value="' + data[index].x + '">' + data[index].type + '</option>');
+   						}
+					}
+				}
+			</script>
 			
 			<div class="table-row">
 				<div class="table-cell">
 					<label>POI Number<span class="mandatory">*</span></label>
 				</div>
 				<div class="table-cell">
-					<input type="text" id="comp-poi-no" th:field="*{poi}" onblur="emptyField(document.getElementById('comp-poi-no').value,this.id,document.getElementById('invalid-comp-poi-no').id)">
-					<div id="invalid-comp-poi-no" class="mandatory-msg"></div>
+					<input type="text" id="poi-no" th:field="*{poi}" onblur="emptyField(document.getElementById('poi-no').value,this.id,document.getElementById('invalid-poi-no').id)">
+					<div id="invalid-poi-no" class="mandatory-msg"></div>
 					<span th:text="${existingPOI}"></span>
 				</div>
 				<div class="table-cell">

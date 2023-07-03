@@ -70,6 +70,7 @@ function populatethree(){
 	});
 };
 
+
 	 
 function func(){
 	console.log("entered func()");
@@ -78,8 +79,6 @@ function func(){
 	var div2 = document.getElementById("individualform");
 	var comp_type = document.getElementById("company-type");
 	var comp_label = document.getElementById("company-label");
-	var company_select = document.getElementById("selectedPOA-comp");
-	var ind_select = document.getElementById("selectedPOA-indi");
 	var selectedValue = select.value;
 	console.log(selectedValue);
 	if(selectedValue=="2")
@@ -88,10 +87,6 @@ function func(){
 	 div2.style.display = 'block';
 	 comp_type.style.display = 'none';
 	 comp_label.style.display = 'none';
-	 company_select.style.display = 'none';
-	}
-	else{
-		ind_select.style.display = 'none';
 	}
 }
 
@@ -125,18 +120,12 @@ function validateEmail(selectedVal,id) {
 	var regex = "/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
 	if(!selectedVal.match(regex))
 	{
-		if(id=="company-mail")
-			document.getElementById("company-mail-msg").innerHTML = "Enter a valid email";
-		else if(id=="individual-mail")
-			document.getElementById("individual-mail-msg").innerHTML = "Enter a valid email";
+		document.getElementById("mail-msg").innerHTML = "Enter a valid email";
 		document.getElementById(id).value = "";
 	}
 	else
 	{
-		if(id=="company-mail")
-			document.getElementById("company-mail-msg").innerHTML = "";
-		else if(id=="individual-mail")
-			document.getElementById("individual-mail-msg").innerHTML = "";
+		document.getElementById("mail-msg").innerHTML = "";
 	}
 }
 
@@ -183,4 +172,33 @@ function emptyField(val,id,spanid) {
 	}
 }
 
+function finalCheck(){
+	console.log("inside finalCheck()");
+	var mobile = document.getElementById("mobile").value;
+	var fname = document.getElementById("fname").value;
+	var lname = document.getElementById("lname").value;
+	var nationality = document.getElementById("nation").value;
+	var poiNo = document.getElementById("poi-no").value;
+	var poaNo = document.getElementById("poa-no").value;
+	if(mobile.length==0 || fname.length==0 || lname.length==0 || nationality.length==0 || poiNo.length==0
+	 || poaNo.length==0)
+	 {
+		 alert("The fields marked compulsory cannot be empty.");
+		 //return false;
+	 }
+	var typeOfAppl = document.getElementById("kind").value;
+	if(typeOfAppl=='1')
+	{
+		var name = document.getElementById("comp-name").value;
+		var pin = document.getElementById("company-pin").value;
+		var address = document.getElementById("comp-addr").value;
+		var poiType = document.getElementById("comp-poi").value;
+		if(name.length==0 || pin.length!=6 || address.length==0 || poiType.length==0)
+		{
+			alert("The fields marked compulsory cannot be empty.");
+			//return false;
+		}
+	}
+	
+}
 	 

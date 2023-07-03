@@ -12,7 +12,62 @@
     		$('#myTable').DataTable();
 		} );
  </script>
- <script>
+
+</head>
+<body>
+	
+    <div id="after-header">
+	<table class="display" id="myTable">
+   	<thead >
+		<th scope="row">ID</th>
+    	<th scope="row">POS Agent ID</th>
+    	<th scope="row">Customer Mobile Number</th>
+    	<th scope="row">Customer Type</th>
+    	<th scope="row">Company Name</th>
+    	<th scope="row">Company Address</th>
+    	<th scope="row">Company DOI</th>
+    	<th scope="row">Company POI type</th>
+    	<th scope="row">First Name</th>
+    	<th scope="row">Middle Name</th>
+    	<th scope="row">Last Name</th>
+    	<th scope="row">Gender</th>
+    	<th scope="row">Nationality</th>
+    	<th scope="row">DOB</th>
+    	<th scope="row">POI type</th>
+    	<th scope="row">POI#</th>
+    	<th scope="row">POA type</th>
+    	<th scope="row">POA#</th>
+    	<th scope="row" style="width:120px;">Action</th>
+   	</thead>
+   <tbody>   
+     <tr th:each="item : ${details}">
+	  <td th:text="${item.id}" id="itemid"></td>
+      <td th:text="${item.pos_agent_id}"></td>
+      <td th:text="${item.mobile}"></td>
+      <td th:text="${item.customer_type}"></td>
+      <td th:text="${item.company_name}"></td>
+      <td th:text="${item.company_address}"></td>
+      <td th:text="${item.company_doi}"></td>
+      <td th:text="${item.company_poi}"></td>
+      <td th:text="${item.first_name}"></td>
+      <td th:text="${item.middle_name}"></td>
+      <td th:text="${item.last_name}"></td>
+      <td th:text="${item.gender}"></td>
+      <td th:text="${item.nationality}"></td>
+      <td th:text="${item.DOB}"></td>
+      <td th:text="${item.POI_type}"></td>
+      <td th:text="${item.poi}"></td>
+      <td th:text="${item.POA_type}"></td>
+      <td th:text="${item.poa}"></td>
+      <td style="width:120px;"> <a th:href="@{/kyc/uploadi/} + ${item.id}" class="btn" id="poi-button" onmouseover="return checkFieldPOINull()"> POI <br> 
+      	   <a th:href="@{/kyc/uploada/} + ${item.id}" class="btn" id="poa-button" onclick="checkFieldNull()"> POA <br>
+		   <a th:href="@{/kyc/view/} + ${item.id}" class="btn" id="view-button"> View
+	  </td>
+     </tr>
+    </tbody>
+  </table>
+  </div>
+   <script>
 	 function checkFieldNull(event) {
 		 var selectedval = document.getElementById("itemid").textContent;
 		 console.log(selectedval);
@@ -38,9 +93,10 @@
   }
   
   function checkFieldPOINull(event){
-  	var selectedval = document.getElementById("itemid").textContent;
-		console.log(selectedval);
-  	$.ajax({
+	$("#myTable tr").mouseover(function() {
+  		var selectedval = $(this).find("td:first").text();
+  		console.log(selectedval);
+  		$.ajax({
     		url: '/kyc/checkPOI/'+selectedval, 
     		method: 'GET',
     		success: function(response) {
@@ -51,68 +107,20 @@
       		} 
       		else {
         		console.log('Field is not null');
-        		$("#poi-button a").prop("href", "#");
-        		console.log('setting href');
+        		$("#poi-button").click(function(event){
+					//event.preventDefault();
+					//console.log("action prevented");
+					alert('No re-entry');
+					return false;
+				});
       		}
     		},
     		error: function(xhr, status, error) {
       		console.log('An error occurred:', error);
     	}
   	});
-}
-
-	 
+	});
+  } 
  </script>
-</head>
-<body>
-	<table class="display" id="myTable">
-   	<thead >
-		<th scope="row">ID</th>
-    	<th scope="row">POS Agent ID</th>
-    	<th scope="row">Customer Mobile Number</th>
-    	<th scope="row">Customer Type</th>
-    	<th scope="row">Company Name</th>
-    	<th scope="row">Company Address</th>
-    	<th scope="row">Company DOI</th>
-    	<th scope="row">Company POI type</th>
-    	<th scope="row">First Name</th>
-    	<th scope="row">Middle Name</th>
-    	<th scope="row">Last Name</th>
-    	<th scope="row">Gender</th>
-    	<th scope="row">Nationality</th>
-    	<th scope="row">DOB</th>
-    	<th scope="row">POI type</th>
-    	<th scope="row">POI#</th>
-    	<th scope="row">POA type</th>
-    	<th scope="row">POA#</th>
-    	<th scope="row" width="200px">Action</th>
-   	</thead>
-   <tbody>   
-     <tr th:each="item : ${details}">
-	  <td th:text="${item.id}" id="itemid"></td>
-      <td th:text="${item.pos_agent_id}"></td>
-      <td th:text="${item.mobile}"></td>
-      <td th:text="${item.customer_type}"></td>
-      <td th:text="${item.company_name}"></td>
-      <td th:text="${item.company_address}"></td>
-      <td th:text="${item.company_doi}"></td>
-      <td th:text="${item.company_poi}"></td>
-      <td th:text="${item.first_name}"></td>
-      <td th:text="${item.middle_name}"></td>
-      <td th:text="${item.last_name}"></td>
-      <td th:text="${item.gender}"></td>
-      <td th:text="${item.nationality}"></td>
-      <td th:text="${item.DOB}"></td>
-      <td th:text="${item.POI_type}"></td>
-      <td th:text="${item.poi}"></td>
-      <td th:text="${item.POA_type}"></td>
-      <td th:text="${item.poa}"></td>
-      <td> <a th:href="@{/kyc/uploadi/} + ${item.id}" class="btn" id="poi-button" onmouseover="checkFieldPOINull()"> POI <br> 
-      	   <a th:href="@{/kyc/uploada/} + ${item.id}" class="btn" id="poa-button" onclick="checkFieldNull()"> POA <br>
-		   <a th:href="@{/kyc/view/} + ${item.id}" class="btn" id="view-button"> View
-	  </td>
-     </tr>
-    </tbody>
-  </table>
 </body>
 </html>

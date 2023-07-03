@@ -1,10 +1,13 @@
 package com.kycproj.kyc.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -58,7 +61,7 @@ public class KController {
 	public String test(Model model) {
 		kyc_details kyc = new kyc_details();
 		model.addAttribute("kyc", kyc);
-		return "savedSuccess";
+		return "test";
 	}
 	
 	
@@ -119,7 +122,7 @@ public class KController {
 		
 		kyc_details savedPOI = kservice.savePOI(filename,id);
 		try {
-		String upload = "POI-photos/" + savedPOI.getId();
+		String upload = "src/main/resources/static/images/POI-photos/" + savedPOI.getId();
 		FilesUpload.saveFile(upload,filename,mpf);
 		}
 		catch(IOException e)
@@ -135,8 +138,6 @@ public class KController {
 		
 		String filename = StringUtils.cleanPath(mpf.getOriginalFilename());
 		System.out.println(filename);
-		//System.out.println(kyc);
-		//int id = kyc.getId();
 		System.out.println(id);
 		kyc_details kyc = new kyc_details();
 		kyc.setPOA_name(filename);
@@ -144,7 +145,7 @@ public class KController {
 		
 		kyc_details savedPOA = kservice.savePOA(filename,id);
 		try {
-		String upload = "POA-photos/" + savedPOA.getId();
+		String upload = "src/main/resources/static/images/POA-photos/" + savedPOA.getId();
 		FilesUpload.saveFile(upload,filename,mpf);
 		}
 		catch(IOException e)
@@ -179,6 +180,7 @@ public class KController {
 		return false;
 	}
 	
+	
 	@GetMapping("view/{id}")
 	public String view(@PathVariable("id") int id, Model model)
 	{
@@ -192,5 +194,22 @@ public class KController {
 	public String home()
 	{
 		return "homepage";
+	}
+	
+	@GetMapping("approve/{id}")
+	public String approve(@PathVariable("id") int id, Model model) {
+		kyc_details old = kservice.getApplicantById(id);
+		System.out.println(old);
+		old.setStatus("approved");
+		kservice.add(old);
+		return "redirect:/kyc/display";
+	}
+	
+	@GetMapping("reject/{id}")
+	public String reject(@PathVariable("id") int id, Model model) {
+		kyc_details old = kservice.getApplicantById(id);
+		old.setStatus("rejected");
+		kservice.add(old);
+		return "redirect:/kyc/display";
 	}
 }
